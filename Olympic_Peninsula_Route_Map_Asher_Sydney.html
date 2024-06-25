@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olympic Peninsula Adventure - Asher & Sydney</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 2em;
+        }
+        #map {
+            height: 80vh;
+            width: 100%;
+        }
+        .popup-content .drawing {
+            width: 100px;
+            height: auto;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            padding: 5px;
+            background-color: #f9f9f9;
+            text-align: center;
+            font-size: 0.8em;
+        }
+        .popup-content {
+            display: flex;
+            align-items: center;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px;
+        }
+        .button-container a {
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>Olympic Peninsula Adventure - Asher & Sydney</header>
+    <div class="button-container">
+        <a href="https://docs.google.com/document/d/1iLLUTSKYRcs9SfbrvedTyN4e3GImeC4MQVAHObfJWJ0/edit?usp=sharing" target="_blank">View Google Doc</a>
+    </div>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([47.8, -123.5], 8);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var locations = [
+            {
+                "name": "Seattle",
+                "coords": [47.6062, -122.3321],
+                "image": "<div class='drawing'>🟦<br>Space Needle<br>🌃</div>",
+                "description": "Starting point of your adventure."
+            },
+            {
+                "name": "Bainbridge Island Ferry Terminal",
+                "coords": [47.6262, -122.5217],
+                "image": "<div class='drawing'>🚢<br>Ferry<br>🛳️</div>",
+                "description": "Catch the ferry to start your journey."
+            },
+            {
+                "name": "Graymarsh Berry Farm",
+                "coords": [48.0911, -123.4960],
+                "image": "<div class='drawing'>🍓<br>Berry Farm<br>🌿</div>",
+                "description": "Pick fresh strawberries and enjoy the farm."
+            },
+            {
+                "name": "Lake Crescent",
+                "coords": [48.0629, -123.7887],
+                "image": "<div class='drawing'>🌊<br>Lake<br>🏞️</div>",
+                "description": "Have a picnic and enjoy the serene lake views."
+            },
+            {
+                "name": "Rialto Beach",
+                "coords": [47.9213, -124.6380],
+                "image": "<div class='drawing'>🏖️<br>Beach<br>🌊</div>",
+                "description": "Explore the beautiful coast and hike to Hole-in-the-Wall."
+            },
+            {
+                "name": "Second Beach",
+                "coords": [47.9062, -124.6195],
+                "image": "<div class='drawing'>🏖️<br>Second Beach<br>🌊</div>",
+                "description": "Discover the scenic Second Beach."
+            },
+            {
+                "name": "Cape Flattery",
+                "coords": [48.3834, -124.7141],
+                "image": "<div class='drawing'>🪨<br>Cape Flattery<br>🌊</div>",
+                "description": "Visit the northwesternmost point of the contiguous U.S."
+            },
+            {
+                "name": "Heart O' the Hills Campground",
+                "coords": [47.9728, -123.4985],
+                "image": "<div class='drawing'>🏕️<br>Campground<br>🌲</div>",
+                "description": "Camp in the lush forest."
+            },
+            {
+                "name": "Hoh Rain Forest",
+                "coords": [47.8605, -123.9344],
+                "image": "<div class='drawing'>🌳<br>Rain Forest<br>🌧️</div>",
+                "description": "Experience the temperate rainforest."
+            },
+            {
+                "name": "Ruby Beach",
+                "coords": [47.6972, -124.4016],
+                "image": "<div class='drawing'>🏖️<br>Ruby Beach<br>🌊</div>",
+                "description": "Walk along the iconic Ruby Beach."
+            },
+            {
+                "name": "Olympia",
+                "coords": [47.0379, -122.9007],
+                "image": "<div class='drawing'>🏛️<br>Olympia<br>🏙️</div>",
+                "description": "Visit the state capital."
+            },
+            {
+                "name": "Smoking Mo’s BBQ",
+                "coords": [47.0436, -122.8286],
+                "image": "<div class='drawing'>🍖<br>BBQ<br>🍽️</div>",
+                "description": "Enjoy a hearty BBQ meal."
+            },
+            {
+                "name": "Olympic Mountain Ice Cream",
+                "coords": [47.0400, -122.8463],
+                "image": "<div class='drawing'>🍦<br>Ice Cream<br>🍨</div>",
+                "description": "Treat yourself to delicious ice cream."
+            }
+        ];
+
+        locations.forEach(function(location) {
+            var popupContent = '<div class="popup-content">' +
+                                location.image +
+                                '<div><strong>' + location.name + '</strong><br>' + location.description + '</div>' +
+                                '</div>';
+            L.marker(location.coords).addTo(map)
+                .bindPopup(popupContent);
+        });
+
+        var route = [
+            [47.6062, -122.3321],
+            [47.6262, -122.5217],
+            [48.0911, -123.4960],
+            [48.0629, -123.7887],
+            [47.9213, -124.6380],
+            [47.9062, -124.6195],
+            [48.3834, -124.7141],
+            [47.9728, -123.4985],
+            [47.8605, -123.9344],
+            [47.6972, -124.4016],
+            [47.0379, -122.9007],
+            [47.0436, -122.8286],
+            [47.0400, -122.8463],
+            [47.6062, -122.3321]
+        ];
+
+        L.polyline(route, {color: 'blue'}).addTo(map);
+    </script>
+</body>
+</html>
